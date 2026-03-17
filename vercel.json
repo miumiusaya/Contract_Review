@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/llm-proxy/:path*",
-      "destination": "http://textin-llm-extract-bidding.ai.intsig.net/:path*"
+      "destination": "http://121.43.195.157:8080/:path*"
     }
   ]
 }
