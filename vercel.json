@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/llm-proxy/:path*",
+      "destination": "http://textin-llm-extract-bidding.ai.intsig.net/:path*"
+    }
+  ]
+}
