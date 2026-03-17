@@ -164,8 +164,6 @@ export default function UploadPage() {
             <IconShield />
             开始智能审查
           </button>
-
-          <p className="text-center text-xs text-slate-400 mt-4">文件仅在本地处理，不会上传至存储服务器</p>
         </div>
 
         {/* Feature badges */}
