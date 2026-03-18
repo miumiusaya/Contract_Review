@@ -77,67 +77,14 @@ export default function ResultsPage() {
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-slate-100">
 
-      {/* ── Header ── */}
-      <header
-        className="flex-none flex items-center justify-between px-6 border-b border-navy-800/30"
-        style={{ background: 'linear-gradient(135deg, #1d4ed8, #3b82f6)', height: '56px' }}
-      >
-        <div className="flex items-center gap-3">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ background: 'rgba(255,255,255,0.2)' }}
-          >
-            <svg className="text-white" style={{ width: 18, height: 18 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <span className="text-white font-semibold text-base font-heading">合同智审</span>
-          {file && (
-            <span className="hidden sm:flex items-center gap-1.5 text-slate-300 text-xs">
-              <span className="text-slate-500">/</span>
-              <svg className="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-              </svg>
-              <span className="max-w-[240px] truncate">{file.name}</span>
-            </span>
-          )}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleExport}
-            disabled={exporting}
-            className="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium text-white border transition-colors cursor-pointer"
-            style={{ borderColor: 'rgba(255,255,255,0.5)' }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          >
-            {exporting ? (
-              <svg className="w-4 h-4 spinner" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-              </svg>
-            ) : <IconDownload />}
-            导出报告
-          </button>
-
-          <button
-            onClick={() => dispatch({ type: 'RESET' })}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-          >
-            <IconBack />
-            重新上传
-          </button>
-        </div>
-      </header>
-
       {/* ── Split Panel ── */}
       <div className="flex-1 flex overflow-hidden">
 
         {/* LEFT — Document viewer (40%) */}
         <div className="flex-none flex flex-col border-r border-slate-200 overflow-hidden bg-white" style={{ width: '40%' }}>
 
-          {/* Doc tabs */}
-          <div className="flex-none border-b border-slate-200 px-4 pt-3 pb-0 flex gap-0 bg-white">
+          {/* Doc tabs + file name */}
+          <div className="flex-none border-b border-slate-200 px-4 pt-3 pb-0 flex items-center gap-0 bg-white">
             {[
               { key: 'source',   label: '源文件' },
               { key: 'markdown', label: '解析结果' },
@@ -150,6 +97,14 @@ export default function ResultsPage() {
                 {t.label}
               </button>
             ))}
+            {file && (
+              <span className="ml-auto flex items-center gap-1 text-slate-400 text-xs pb-2 max-w-[180px] truncate">
+                <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+                <span className="truncate">{file.name}</span>
+              </span>
+            )}
           </div>
 
           {/* Source PDF */}
@@ -166,7 +121,7 @@ export default function ResultsPage() {
         {/* RIGHT — Review panel (60%) */}
         <div className="flex-1 flex flex-col overflow-hidden bg-white">
 
-          {/* Review tabs */}
+          {/* Review tabs + action buttons */}
           <div className="flex-none border-b border-slate-200 px-5 pt-3 pb-0 flex items-center gap-0 bg-white">
             {reviewTabs.map(t => (
               <button
@@ -188,6 +143,26 @@ export default function ResultsPage() {
                 }
               </button>
             ))}
+
+            {/* Action buttons */}
+            <div className="ml-auto flex items-center gap-2 pb-2">
+              <button
+                onClick={handleExport}
+                disabled={exporting}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-colors cursor-pointer"
+                style={{ background: 'linear-gradient(135deg, #1d4ed8, #3b82f6)' }}
+              >
+                {exporting ? <IconSpinner /> : <IconDownload />}
+                导出报告
+              </button>
+              <button
+                onClick={() => dispatch({ type: 'RESET' })}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 border border-slate-200 transition-colors cursor-pointer"
+              >
+                <IconBack />
+                重新上传
+              </button>
+            </div>
           </div>
 
           {/* Review content */}
