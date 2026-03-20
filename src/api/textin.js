@@ -10,7 +10,7 @@ export async function parseDocumentWithTextIn(file) {
     table_flavor: 'html',
     apply_document_tree: '1',
     markdown_details: '1',
-    pages_detail: '1',
+    page_details: '1',
   })
 
   const response = await fetch(`${TEXTIN_URL}?${params}`, {
