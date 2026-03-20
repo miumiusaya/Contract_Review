@@ -11,6 +11,7 @@ export async function parseDocumentWithTextIn(file) {
     apply_document_tree: '1',
     markdown_details: '1',
     page_details: '1',
+    get_image: 'both',
   })
 
   const response = await fetch(`${TEXTIN_URL}?${params}`, {
