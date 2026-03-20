@@ -29,7 +29,7 @@ const IconBack = () => (
 export default function ResultsPage() {
   const { state, dispatch } = useApp()
   const {
-    pdfArrayBuffer, ocrMarkdown, file,
+    ocrPages, ocrMarkdown, file,
     clauseLlmJson, clauseRawJson, normLlmJson, normRawJson,
     clauseLoading, normLoading, clauseError, normError,
   } = state
@@ -109,7 +109,7 @@ export default function ResultsPage() {
 
           {/* Source PDF */}
           <div className={`flex-1 overflow-hidden ${activeDocTab !== 'source' ? 'hidden' : 'flex flex-col'}`}>
-            <PDFViewer pdfArrayBuffer={pdfArrayBuffer} target={pdfTarget} />
+            <PDFViewer pages={ocrPages} target={pdfTarget} />
           </div>
 
           {/* Markdown */}

@@ -3,7 +3,6 @@ import { createContext, useContext, useReducer } from 'react'
 const initialState = {
   view: 'upload',           // 'upload' | 'loading' | 'results'
   file: null,
-  pdfArrayBuffer: null,
   // loading (OCR phase)
   stepStatus: ['waiting'],
   loadingError: '',
@@ -28,7 +27,6 @@ function reducer(state, action) {
   switch (action.type) {
     case 'SET_VIEW':          return { ...state, view: action.payload }
     case 'SET_FILE':          return { ...state, file: action.payload }
-    case 'SET_PDF_BUFFER':    return { ...state, pdfArrayBuffer: action.payload }
     case 'SET_STEP_STATUS':   return { ...state, stepStatus: action.payload }
     case 'SET_LOADING_ERROR': return { ...state, loadingError: action.payload }
     case 'SET_OCR_RESULT':    return { ...state, ocrMarkdown: action.payload.markdown, ocrPages: action.payload.pages }

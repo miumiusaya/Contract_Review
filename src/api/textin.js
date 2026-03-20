@@ -10,6 +10,7 @@ export async function parseDocumentWithTextIn(file) {
     table_flavor: 'html',
     apply_document_tree: '1',
     markdown_details: '1',
+    pages_detail: '1',
   })
 
   const response = await fetch(`${TEXTIN_URL}?${params}`, {
@@ -29,4 +30,14 @@ export async function parseDocumentWithTextIn(file) {
     markdown: result.markdown ?? '',
     pages: Array.isArray(result.pages) ? result.pages : [],
   }
+}
+
+export async function downloadPageImage(imageId) {
+  const response = await fetch(
+    `/textin-img/ocr_image/download?image_id=${encodeURIComponent(imageId)}`,
+    { headers: { 'x-ti-app-id': 'user_trial' } }
+  )
+  if (!response.ok) throw new Error(`图像下载失败: HTTP ${response.status}`)
+  const blob = await response.blob()
+  return URL.createObjectURL(blob)
 }

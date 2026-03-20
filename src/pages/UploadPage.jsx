@@ -36,7 +36,11 @@ export default function UploadPage() {
   function validateAndSet(f) {
     setError('')
     if (!f) return
-    if (!f.name.toLowerCase().endsWith('.pdf')) { setError('请上传 PDF 格式文件'); return }
+    const name = f.name.toLowerCase()
+    if (!name.endsWith('.pdf') && !name.endsWith('.doc') && !name.endsWith('.docx')) {
+      setError('请上传 PDF 或 Word 格式文件')
+      return
+    }
     if (f.size > 50 * 1024 * 1024) { setError('文件大小不能超过 50MB'); return }
     setFile(f)
   }
@@ -51,10 +55,7 @@ export default function UploadPage() {
     try {
       // Step 1 — OCR (sequential, must complete before anything else)
       dispatch({ type: 'SET_STEP_STATUS', payload: ['active'] })
-      const buf = await file.arrayBuffer()
-      dispatch({ type: 'SET_PDF_BUFFER', payload: buf.slice(0) })
-      const ocrFile = new File([buf], file.name, { type: file.type })
-      const { markdown, pages } = await parseDocumentWithTextIn(ocrFile)
+      const { markdown, pages } = await parseDocumentWithTextIn(file)
       dispatch({ type: 'SET_OCR_RESULT', payload: { markdown, pages } })
       dispatch({ type: 'SET_STEP_STATUS', payload: ['done'] })
 
@@ -108,7 +109,7 @@ export default function UploadPage() {
             onDrop={e => { e.preventDefault(); setDragging(false); validateAndSet(e.dataTransfer.files[0]) }}
             onClick={() => fileInputRef.current?.click()}
           >
-            <input ref={fileInputRef} type="file" accept=".pdf" className="hidden" onChange={e => validateAndSet(e.target.files[0])} />
+            <input ref={fileInputRef} type="file" accept=".pdf,.doc,.docx" className="hidden" onChange={e => validateAndSet(e.target.files[0])} />
 
             {!file ? (
               <div>
@@ -116,12 +117,12 @@ export default function UploadPage() {
                   <IconDoc />
                 </div>
                 <p className="text-slate-700 font-semibold text-lg mb-1">拖拽文件至此处，或点击上传</p>
-                <p className="text-slate-400 text-sm mb-3">支持 PDF 合同文件，最大 50MB</p>
+                <p className="text-slate-400 text-sm mb-3">支持 PDF / Word 合同文件，最大 50MB</p>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#f0f4ff', color: '#1a2744' }}>
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  仅支持 PDF
+                  PDF · DOC · DOCX
                 </span>
               </div>
             ) : (
