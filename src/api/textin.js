@@ -39,6 +39,8 @@ export async function downloadPageImage(imageId) {
     { headers: { 'x-ti-app-id': 'user_trial' } }
   )
   if (!response.ok) throw new Error(`图像下载失败: HTTP ${response.status}`)
-  const blob = await response.blob()
-  return URL.createObjectURL(blob)
+  const json = await response.json()
+  const b64 = json?.data?.image
+  if (!b64) throw new Error('图像数据为空')
+  return `data:image/jpeg;base64,${b64}`
 }
