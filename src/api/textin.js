@@ -12,6 +12,8 @@ export async function parseDocumentWithTextIn(file) {
     markdown_details: '1',
     page_details: '1',
     get_image: 'both',
+    crop_dewarp: '1',
+    remove_watermark: '1',
   })
 
   const response = await fetch(`${TEXTIN_URL}?${params}`, {
