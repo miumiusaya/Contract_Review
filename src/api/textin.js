@@ -37,7 +37,7 @@ export async function parseDocumentWithTextIn(file) {
 
 export async function downloadPageImage(imageId) {
   const response = await fetch(
-    `https://textin-api-pre.intsig.com/ocr_image/download?image_id=${encodeURIComponent(imageId)}`,
+    `https://api.textin.com/ocr_image/download?image_id=${encodeURIComponent(imageId)}`,
     { headers: { 'x-ti-app-id': 'user_trial' } }
   )
   if (!response.ok) throw new Error(`图像下载失败: HTTP ${response.status}`)
